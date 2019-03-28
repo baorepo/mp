@@ -56,7 +56,7 @@ MPY_EXT_SRC_C := \
 		lib/utils/sys_stdio_mphal.c \
 		lib/oofatfs/ff.c \
 		lib/oofatfs/option/ccsbcs.c
-AllDirs += $(shell ls -R | grep '^\./.*:$$' | grep -v "lvgl" |grep -v "nes" | grep -v "video" |grep -v "./build" | awk '{gsub(":","");print}') .
+AllDirs += $(shell ls -R | grep '^\./.*:$$' | grep -v "lvgl" |grep -v "arduino" |grep -v "nes" | grep -v "video" |grep -v "./build" | awk '{gsub(":","");print}') .
 
 ###### LVGL #######
 ifeq (${CFG_MAIXPY_LVGL_SUPPORT},y)
@@ -150,6 +150,26 @@ SRC_C += $(SRC_NES)
 endif
 ###### NES END ####
 
+###### ARDUINO #######
+ifeq (${CFG_ARDUINO_SUPPORT},y)
+CFLAGS_MOD += -DMICROPY_PY_ARDUINO=1
+ARDUINO_DIR_REL := ./arduino
+ARDUINO_DIR := $(CUR_DIR)/arduino
+SRC_ARDUINO := \
+			${wildcard ${ARDUINO_DIR_REL}/*.c} 
+# SRCXX_ARDUINO := \
+# 			${wildcard ${ARDUINO_DIR_REL}/*.cpp} 
+ARDUINO_INCLUDE := \
+			-I $(ARDUINO_DIR)/ \
+			-I $(ARDUINO_DIR)/arduio_core/cores/k210 \
+			-I $(ARDUINO_DIR)/arduio_core/variants/k210 \
+
+INCLUDE += $(ARDUINO_INCLUDE)
+SRC_C += $(SRC_ARDUINO)
+SRC_CPP += $(SRCXX_ARDUINO)
+endif
+###### ARDUINO END ####
+
 ##### TOUCHSCREEN #####
 ifeq (${CFG_MAIXPY_TOUCH_SCREEN_SUPPORT},y)
 TOUCHSCREEN_ROOT_DIR := $(CUR_DIR)/touchscreen
@@ -189,7 +209,7 @@ sinclude $(INC_DIR)/platform.mk
 CFLAGS+=$(INCLUDE) $(INCLUDE_ALL)
 TEMP_DIRS := $(subst build,,$(AllDirs))
 SRC_C += $(foreach n,$(TEMP_DIRS) , $(wildcard $(n)/*.c))
-SRC_CPP := $(foreach n,$(TEMP_DIRS) , $(wildcard $(n)/*.cpp))
+SRC_CPP += $(foreach n,$(TEMP_DIRS) , $(wildcard $(n)/*.cpp))
 SRC_C += $(MPY_EXT_SRC_C) 
 SRC_QSTR += $(SRC_C)
 SRC_C_ALL := $(SRC_C)
@@ -209,13 +229,16 @@ $(CXX_OBJ):%.o:%.cpp
 MAKE_J_NUMBER=$(shell cat /proc/cpuinfo | grep vendor_id | wc -l)
 # $(HEADER_BUILD)/qstr.i.last $(HEADER_BUILD)/qstrdefs.generated.h $(BUILD)/_frozen_mpy.c
 compile: $(BUILD)/genhdr/qstrdefs.generated.h mkbuild $(OUTPUT_BIN)
+	echo "$(AllDirs)............................."
 	$(call echo_info,"Making compile ...")
 	$(foreach n,${SUBDIRS},make -j${MAKE_J_NUMBER} -C ${n} compile || exit "$$?";)
 
 $(OUTPUT_BIN): $(OBJ) $(CXX_OBJ) 
+	echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>2"
 	@$(AR) rcs -o $@ $(CXX_OBJ) $(OBJ) $(LIBS) $(LDFLAGS)
 
 mkbuild:
+	echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>3"
 	@mkdir -p $(BUILD)
 
 all: compile

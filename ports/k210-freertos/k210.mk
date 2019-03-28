@@ -89,11 +89,16 @@ BIN_LDFLAGS := \
 		-Wl,-EL \
 		-T $(platform-lds) \
 		$(mainobj) \
+		"/opt/kendryte-toolchain/lib/gcc/riscv64-unknown-elf/8.2.0/crti.o" \
+		"/opt/kendryte-toolchain/lib/gcc/riscv64-unknown-elf/8.2.0/crtbegin.o" \
+		"/opt/kendryte-toolchain/lib/gcc/riscv64-unknown-elf/8.2.0/crtn.o" \
+		/opt/kendryte-toolchain/lib/gcc/riscv64-unknown-elf/8.2.0/crtend.o \
 		$(BIN_DIR)/mpy_support.a \
 		$(BIN_DIR)/spiffs.a \
 		$(BIN_DIR)/drivers.a \
 		$(BIN_DIR)/api.a \
 		$(BIN_DIR)/libkendryte.a \
+		$(BIN_DIR)/libarduino.a \
 		./platform/api/lib_mic.a\
 		-lm -latomic -lc -lstdc++ \
 		-Wl,--start-group \

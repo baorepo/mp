@@ -14,7 +14,20 @@ SDK_GIT_ADDR := https://github.com/sipeed/kendryte-standalone-sdk.git
 SDK_GIT_BRANCH := Maixpy-dev
 SDK_DIR_NAME :=kendryte-standalone-sdk
 SDK_DIR := $(CUR_DIR)/$(SDK_DIR_NAME)
-INCLUDE := -I "$(SDK_DIR)/lib/bsp/include/" -I "$(SDK_DIR)/lib/drivers/include/" -I "$(SDK_DIR)/lib/bsp/include/" -I "$(SDK_DIR)/lib/bsp/include/" -I "$(SDK_DIR)/lib/freertos/conf/" -I "$(SDK_DIR)/lib/freertos/include/" -I "$(SDK_DIR)/lib/freertos/portable/" -I "$(SDK_DIR)/lib/utils/include/" 
+INCLUDE := -I "$(SDK_DIR)/lib/bsp/include/" \
+			-I "$(SDK_DIR)/lib/drivers/include/" \
+			-I "$(SDK_DIR)/lib/bsp/include/" \
+			-I "$(SDK_DIR)/lib/bsp/include/" \
+			-I "$(SDK_DIR)/lib/freertos/conf/" \
+			-I "$(SDK_DIR)/lib/freertos/include/" \
+			-I "$(SDK_DIR)/lib/freertos/portable/" \
+			-I "$(SDK_DIR)/lib/utils/include/" \
+			-I "$(SDK_DIR)/../arduino_core/cores/k210" \
+			-I "$(SDK_DIR)/../arduino_core/variants/k210" \
+			-I "$(SDK_DIR)/../arduino_core/libraries/wraper" 
+
+
+
 
 ##############################################################################
 # USER CONFIG MAKE METHOD
@@ -31,8 +44,9 @@ build_env:
 MAKE_J_NUMBER=$(shell cat /proc/cpuinfo | grep vendor_id | wc -l)
 compile: build_env
 	-mkdir -p build
-	cd build && cmake ../$(SDK_DIR_NAME)/ -DPROJ=hello_world -DTOOLCHAIN=$(patsubst %/,%,$(dir $(CROSS_COMPILE))) && make -j${MAKE_J_NUMBER}
+	cd build && cmake ../$(SDK_DIR_NAME)/ -DPROJ=arduino_core -DLIBARDUINO=1  -DTOOLCHAIN=$(patsubst %/,%,$(dir $(CROSS_COMPILE))) && make -j${MAKE_J_NUMBER}
 	cp ${CUR_DIR}/${OUTPUT_DIR}/lib/libkendryte.a ${BIN_DIR}/
+	cp ${CUR_DIR}/${OUTPUT_DIR}/libarduino.a ${BIN_DIR}/
 
 include_mk: build_env
 	$(call echo_info,"update include mk file ...")

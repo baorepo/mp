@@ -259,8 +259,7 @@ extern const struct _mp_obj_module_t kpu_module;
 extern const struct _mp_obj_module_t audio_module;
 extern const struct _mp_obj_module_t mp_module_uhashlib_maix;
 extern const struct _mp_obj_module_t mp_module_ucryptolib;
-
-
+extern const struct _mp_obj_module_t arduino_module;
 // openmv minimum
 #ifndef MAIXPY_OMV_MINIMUM_FUNCTION
 #define MAIXPY_OMV_MINIMUM_FUNCTION         (0) // Minimum function
@@ -336,6 +335,7 @@ extern const struct _mp_obj_module_t mp_module_touchscreen;
     { MP_OBJ_NEW_QSTR(MP_QSTR_cpufreq), (mp_obj_t)&cpufreq_module }, \
     { MP_OBJ_NEW_QSTR(MP_QSTR_KPU), (mp_obj_t)&kpu_module }, \
     { MP_OBJ_NEW_QSTR(MP_QSTR_audio), (mp_obj_t)&audio_module }, \
+    { MP_OBJ_NEW_QSTR(MP_QSTR_arduino), (mp_obj_t)&arduino_module }, \
     { MP_OBJ_NEW_QSTR(MP_QSTR_uhashlib), (mp_obj_t)&mp_module_uhashlib_maix }, \
     { MP_OBJ_NEW_QSTR(MP_QSTR_ucryptolib), (mp_obj_t)&mp_module_ucryptolib }, \
     MAIXPY_PY_NES_DEF \
@@ -359,6 +359,7 @@ extern const struct _mp_obj_module_t mp_module_touchscreen;
     { MP_OBJ_NEW_QSTR(MP_QSTR_struct), (mp_obj_t)&mp_module_ustruct }, \
     { MP_OBJ_NEW_QSTR(MP_QSTR_zlib), (mp_obj_t)&mp_module_uzlib }, \
     { MP_OBJ_NEW_QSTR(MP_QSTR_hashlib), (mp_obj_t)&mp_module_uhashlib_maix }, \
+    
 
 #define MICROPY_PY_MACHINE                  (1)
 #define MICROPY_PY_MACHINE_PIN_MAKE_NEW     mp_pin_make_new
