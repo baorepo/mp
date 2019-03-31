@@ -44,7 +44,7 @@ build_env:
 MAKE_J_NUMBER=$(shell cat /proc/cpuinfo | grep vendor_id | wc -l)
 compile: build_env
 	-mkdir -p build
-	cd build && cmake ../$(SDK_DIR_NAME)/ -DPROJ=arduino_core -DLIBARDUINO=1  -DTOOLCHAIN=$(patsubst %/,%,$(dir $(CROSS_COMPILE))) && make -j${MAKE_J_NUMBER}
+	cd build && cmake ../$(SDK_DIR_NAME)/ -DPROJ=arduino_core -DLIBARDUINO=1 -DMICROPYTHON=1 -DTOOLCHAIN=$(patsubst %/,%,$(dir $(CROSS_COMPILE))) && make -j${MAKE_J_NUMBER} 
 	cp ${CUR_DIR}/${OUTPUT_DIR}/lib/libkendryte.a ${BIN_DIR}/
 	cp ${CUR_DIR}/${OUTPUT_DIR}/libarduino.a ${BIN_DIR}/
 
