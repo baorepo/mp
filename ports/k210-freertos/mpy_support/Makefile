@@ -156,7 +156,8 @@ CFLAGS_MOD += -DMICROPY_PY_ARDUINO=1
 ARDUINO_DIR_REL := ./arduino
 ARDUINO_DIR := $(CUR_DIR)/arduino
 SRC_ARDUINO := \
-			${wildcard ${ARDUINO_DIR_REL}/*.c} 
+			${wildcard ${ARDUINO_DIR_REL}/*.c} \
+			${wildcard ${ARDUINO_DIR_REL}/librarys/*.c} 
 # SRCXX_ARDUINO := \
 # 			${wildcard ${ARDUINO_DIR_REL}/*.cpp} 
 ARDUINO_INCLUDE := \
