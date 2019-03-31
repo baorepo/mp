@@ -36,23 +36,12 @@
 
 #if MICROPY_PY_ARDUINO
 
-//这是我们定义函数
-STATIC mp_obj_t modtest_test0()
-{
-    pinMode(13,OUTPUT);
-    serial_struct *serial;
-    arduino_serial_new(&serial);
-    arduino_serial_begin(serial,115200,2,6,7);
-    arduino_serial_delete(serial);
+extern const mp_obj_type_t arduino_serial_type;
 
-    return mp_const_none;//不需要返回数据就返回它
-}
-//每一个我们和python接口的函数都需要使用这个宏定义
-STATIC const MP_DEFINE_CONST_FUN_OBJ_0(modtest_obj_test0,modtest_test0);
 
 STATIC const mp_map_elem_t arduino_module_globals_table[] = {
     { MP_OBJ_NEW_QSTR(MP_QSTR___name__), MP_OBJ_NEW_QSTR(MP_QSTR_arduino) },
-    {MP_OBJ_NEW_QSTR(MP_QSTR_test0), MP_ROM_PTR(&modtest_obj_test0)},
+    {MP_OBJ_NEW_QSTR(MP_QSTR_Serial), MP_ROM_PTR(&arduino_serial_type)},
 };
 
 STATIC MP_DEFINE_CONST_DICT (

@@ -28,5 +28,15 @@
 #define MICROPY_INCLUDED_ARDUINO_H
 
 #include "py/obj.h"
+#include "arduino_wraper.h"
+
+extern const mp_obj_type_t arduino_serial_type;
+
+
+typedef struct _arduino_serial_obj_t {
+    mp_obj_base_t base;
+    serial_struct *serial;
+} arduino_serial_obj_t;
+
 
 #endif // MICROPY_INCLUDED_ARDUINO_H
